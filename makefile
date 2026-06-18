@@ -5,25 +5,23 @@ dependencies:
 	@which uv > /dev/null 2>&1 || curl -Ls https://astral.sh/uv/install.sh | sh
 
 ./tmp/.venv/.installed: uv.lock pyproject.toml
+	mkdir tmp
 	UV_PROJECT_ENVIRONMENT=./tmp/.venv $(UV) sync
 	touch $@
 
 clean:
-	rm -rf ./tmp/.venv ./tmp/yolo26x.pt ./tmp/yolov8n.pt
-
-clean-all: clean
 	@echo "This will delete the dataset and trained data too, if do not want to \
 	delete all press ctrl + c or ctrl + z"
-	@echo "Sleeping for 5 seconds..."
-	@sleep 5
-	rm -rf ./tmp/dataset ./core/runs ./runs
+	@echo "Sleeping for 10 seconds..."
+	@sleep 10
+	rm -rf ./tmp ./core/runs ./runs
 
 install: dependencies ./tmp/.venv/.installed
 
 run: install
 	$(PYTHON) ./core/yolo.py $(ARGS)
 
-.PHONY: clean clean-all dependencies install run
+.PHONY: clean dependencies install run
 
 #=============================
 # Treino padrão

@@ -21,6 +21,8 @@ def parse_args():
     p.add_argument("--no-amp",     action="store_false", dest="amp")
     return p.parse_args()
 
+############################################################################
+
 def get_device(args):
     if not torch.cuda.is_available():
         args.amp = False
