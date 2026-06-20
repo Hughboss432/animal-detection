@@ -14,7 +14,7 @@ clean:
 	delete all press ctrl + c or ctrl + z"
 	@echo "Sleeping for 10 seconds..."
 	@sleep 10
-	rm -rf ./tmp ./core/runs ./runs
+	rm -rf ./tmp ./core/runs ./runs yolo26n.pt
 
 install: dependencies ./tmp/.venv/.installed
 

@@ -15,9 +15,13 @@ Projeto para fine-tuning de modelos YOLO em datasets customizados, com ambiente 
 │   ├── dataset/          # Dataset de treino (inserido pelo usuário)
 │   │   └── data.yaml
 │   └── yolo26x.pt        # Modelo base (baixado automaticamente)
+├── .gitignore            # ---
+├── LICENSE               # ---
+├── makefile              # Automação básica
 ├── pyproject.toml        # Dependências do projeto
+├── README                # ---
 ├── uv.lock               # Lock file (não edite manualmente)
-└── makefile
+└── yolo26n.pt            # Utilizado para teste AMP automatico
 ```
 
 ---
