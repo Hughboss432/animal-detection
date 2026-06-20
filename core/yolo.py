@@ -10,14 +10,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Default arguments,
 def parse_args():
     p = argparse.ArgumentParser()
-    p.add_argument("--data",       default="dataset/data.yaml")
+    p.add_argument("--data",       type=str, default="dataset/data.yaml")
     p.add_argument("--epochs",     type=int, default=100)
     p.add_argument("--save-every", type=int, default=10, dest="save_every")
-    p.add_argument("--model",      default="yolo26x.pt")
-    p.add_argument("--batch",      type=int, default=16)
-    p.add_argument("--workers",    type=int, default=8)
+    p.add_argument("--model",      type=str, default="yolo26x.pt")
+    p.add_argument("--optimizer",  type=str, default="auto")
+    p.add_argument("--batch",      type=int, default=-1)
+    p.add_argument("--workers",    type=int, default=4)
     p.add_argument("--imgsz",      type=int, default=640)
-    p.add_argument("--resume",      type=bool, default=False)
+    p.add_argument("--resume",     type=bool, default=False)
     p.add_argument("--amp",        action="store_true", default=True)
     p.add_argument("--no-amp",     action="store_false", dest="amp")
     return p.parse_args()
@@ -54,6 +55,7 @@ def fine_tuning(args):
             epochs=args.epochs,
             imgsz=args.imgsz,
             device=device,
+            optimizer=args.optimizer,
             name="train",
             save=True,
             resume=args.resume,

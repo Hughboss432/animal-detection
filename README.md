@@ -14,7 +14,7 @@ Projeto para fine-tuning de modelos YOLO em datasets customizados, com ambiente 
 │   ├── .venv/            # Ambiente virtual
 │   ├── dataset/          # Dataset de treino (inserido pelo usuário)
 │   │   └── data.yaml
-│   └── yolo26n.pt        # Modelo base (baixado automaticamente)
+│   └── yolo26x.pt        # Modelo base (baixado automaticamente)
 ├── pyproject.toml        # Dependências do projeto
 ├── uv.lock               # Lock file (não edite manualmente)
 └── makefile
@@ -22,7 +22,7 @@ Projeto para fine-tuning de modelos YOLO em datasets customizados, com ambiente 
 
 ---
 
-- Python 3.10
+- Python >=3.10,<3.14
 - [`uv`](https://github.com/astral-sh/uv) (instalado automaticamente pelo `make`)
 - CPU ou GPU (CUDA)
 
@@ -70,19 +70,22 @@ make run ARGS="--epochs 50 --save-every 25 --model yolo26n.pt"
 
 ---
 
-### Argumentos
+### Argumentos¹
 
 | Argumento    | Padrão            | Descrição                                              |
 |--------------|-------------------|--------------------------------------------------------|
 | `--data`     | `dataset/data.yaml` | Caminho para o arquivo de configuração do dataset    |
 | `--epochs`   | `100`             | Número total de épocas de treino                       |
 | `--save-every`| `10`             | Salvar checkpoint a cada N épocas                      |
-| `--model`    | `yolo26n.pt`      | Modelo base para fine-tuning                           |
+| `--model`    | `yolo26x.pt`      | Modelo base para fine-tuning                           |
+| `--optimizer` | `auto`           | Otimizador                                             |
 | `--imgsz`    | `640`             | Tamanho da imagem de entrada (pixels)                  |
 | `--resume`   | `0`               | Retomar treinamento                                    |
-| `--batch`    | `2`               | Tamanho do batch (reduza se faltar memória RAM)        |
-| `--workers`  | `0`               | Workers do dataloader (use 0 em CPU)                   |
+| `--batch`    | `-1`              | Tamanho do batch (auto 60% de uso)                     |
+| `--workers`  | `4`               | Workers do dataloader (use 4 em CPU)                   |
 | `--no-amp`   | —                 | Desativa mixed precision (automático em CPU)           |
+
+> ¹ Em caso de duvidas, veja a documentação oficial dos parâmetros em [`ultralytics`](https://docs.ultralytics.com/usage/cfg#train-settings).
 
 ---
 
@@ -99,12 +102,12 @@ core/runs/train/weights/
 └── best.pt
 ```
 
->O arquivo `best.pt` contém o melhor modelo ao longo do treino. O modelo final é exportado para ONNX ao término.
+> O arquivo `best.pt` contém o melhor modelo ao longo do treino. O modelo final é exportado para ONNX ao término.
 
-No caso de treino continuo de dataset:
+No caso de treino continuo de dataset, retomando de onde parou:
 
 ```bash
-make run ARGS="--model runs/train/weights/last.pt --resume 1"
+make run ARGS="--model runs/train/weights/last.pt --resume True"
 ```
 
 Para treinar outro dataset:
@@ -127,4 +130,16 @@ O script detecta automaticamente se há GPU disponível:
 make clean
 ```
 
-> `make clean` aguarda 10 segundos antes de deletar — pressione `Ctrl+C` para cancelar.
+> **Cuidado**, esse comando **vai limpar o projeto**. Aguarde 10 segundos antes de deletar — pressione `Ctrl+C` ou `Ctrl+Z` para cancelar.
+
+## Anotações
+
+> 1 - Esse script é uma automação básica para fine-tuning e não foi testado de forma intensa, caso encontre algum erro, sinta-se livre modificalo e adapta-lo para o seu caso.
+
+> 2 - Para os parâmetros, foram escolhidos apenas os julgados essenciais da documentação oficial para uso genérico.
+
+---
+
+## Licença
+
+MIT
