@@ -88,7 +88,7 @@ make run ARGS="--epochs 50 --save-every 25 --model yolo26n.pt"
 | `--exist_ok` | `False`           | Sobrescrever checkpoint                                |
 | `--resume`   | `False`           | Retomar treinamento                                    |
 | `--batch`    | `-1`              | Tamanho do batch (auto 60% de uso)                     |
-| `--workers`  | `4`               | Workers do dataloader (use 4 em CPU)                   |
+| `--workers`  | —                 | Workers do dataloader (usa o máximo entre max-2 ou 1)  |
 | `--no-amp`   | —                 | Desativa mixed precision (automático em CPU)           |
 
 > ¹ Em caso de duvidas, veja a documentação oficial dos parâmetros em [`ultralytics`](https://docs.ultralytics.com/usage/cfg#train-settings).
@@ -108,7 +108,7 @@ core/runs/train/weights/
 └── best.pt
 ```
 
-> O arquivo `best.pt` contém o melhor modelo ao longo do treino. O modelo final é exportado para ONNX ao término.
+> O arquivo `best.pt` contém o melhor modelo ao longo do treino. O modelo final é exportado ao término.
 
 No caso de treino continuo de dataset, retomando de onde parou:
 
@@ -122,12 +122,13 @@ Para treinar outro dataset:
 make run ARGS="--data dataset2/data.yaml --model runs/train/weights/best.pt"
 ```
 
-## Dispositivo
+## Dispositivo e Workers
 
-O script detecta automaticamente se há GPU disponível:
+O script detecta automaticamente se há GPU disponível e um nível seguro de workers:
 
 - **GPU**: usa a placa com mais memória livre e habilita mixed precision (AMP)
 - **CPU**: desativa AMP
+- **Workers**: usa o máximo entre (1) e (total - 2)
 
 ## Limpeza
 
@@ -138,11 +139,13 @@ make clean
 
 > **Cuidado**, esse comando **vai limpar o projeto**. Aguarde 10 segundos antes de deletar — pressione `Ctrl+C` ou `Ctrl+Z` para cancelar.
 
-## Anotações
+## Anotações e avisos importantes
 
-> 1 - Esse script é uma automação básica para fine-tuning e não foi testado de forma intensa, caso encontre algum erro, sinta-se livre modificalo e adapta-lo para o seu caso.
+> 1 - Esse script é uma automação básica para fine-tuning e não foi testado de forma intensa, caso encontre algum erro, sinta-se livre para modificar e adapta-lo para o seu caso.
 
-> 2 - Para os parâmetros, foram escolhidos apenas os julgados essenciais da documentação oficial para uso genérico.
+> 2 - **Mudar os parâmetros após uma retomada de checkpoint pode fazer o treino voltar para um estado anterior**, já que alterações em parâmetros como `workers`, `device` e `batch` mexem na configuração salva no args.yaml da run original. É recomendado realizar o fine-tuning com este projeto e esses parâmetros fixados caso o ambiente de treinamento não tenha uma configuração fixa(como o Colab).
+
+> 3 - Dentre os parâmetros escolhidos, foram escolhidos apenas os julgados essenciais da documentação oficial para uso genérico.
 
 ---
 

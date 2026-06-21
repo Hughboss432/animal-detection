@@ -17,7 +17,7 @@ def parse_args():
     p.add_argument("--optimizer",  type=str, default="auto")
     p.add_argument("--project",    type=str, default=os.path.join(BASE_DIR, "core", "runs"))
     p.add_argument("--batch",      type=int, default=-1)
-    p.add_argument("--workers",    type=int, default=4)
+    p.add_argument("--workers",    type=int, default=max(1, (os.cpu_count()-2)))
     p.add_argument("--imgsz",      type=int, default=640)
     p.add_argument("--exist_ok",   type=bool, default=False)
     p.add_argument("--resume",     type=bool, default=False)
