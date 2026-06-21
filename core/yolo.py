@@ -19,6 +19,7 @@ def parse_args():
     p.add_argument("--batch",      type=int, default=-1)
     p.add_argument("--workers",    type=int, default=4)
     p.add_argument("--imgsz",      type=int, default=640)
+    p.add_argument("--exist_ok",   type=bool, default=False)
     p.add_argument("--resume",     type=bool, default=False)
     p.add_argument("--amp",        action="store_true", default=True)
     p.add_argument("--no-amp",     action="store_false", dest="amp")
@@ -59,6 +60,7 @@ def fine_tuning(args):
             optimizer=args.optimizer,
             name="train",
             save=True,
+            exist_ok=args.exist_ok,
             resume=args.resume,
             batch=args.batch,
             workers=args.workers,
