@@ -85,11 +85,11 @@ make run ARGS="--epochs 50 --save-every 25 --model yolo26n.pt"
 | `--project`  | `core/runs`       | Caminho padrão do checkpoint                           |
 | `--optimizer`| `auto`            | Otimizador                                             |
 | `--imgsz`    | `640`             | Tamanho da imagem de entrada (pixels)                  |
-| `--exist_ok` | `False`           | Sobrescrever checkpoint                                |
-| `--resume`   | `False`           | Retomar treinamento                                    |
+| `--exist_ok` | `0`               | Sobrescrever checkpoint                                |
+| `--resume`   | `0`               | Retomar treinamento                                    |
 | `--batch`    | `-1`              | Tamanho do batch (auto 60% de uso)                     |
 | `--workers`  | —                 | Workers do dataloader (usa o máximo entre max-2 ou 1)  |
-| `--no-amp`   | —                 | Desativa mixed precision (automático em CPU)           |
+| `--amp`      | —                 | Mixed precision (Desativado em cpu)                    |
 
 > ¹ Em caso de duvidas, veja a documentação oficial dos parâmetros em [`ultralytics`](https://docs.ultralytics.com/usage/cfg#train-settings).
 
@@ -113,7 +113,7 @@ core/runs/train/weights/
 No caso de treino continuo de dataset, retomando de onde parou:
 
 ```bash
-make run ARGS="--model core/runs/train/weights/last.pt --resume True"
+make run ARGS="--model core/runs/train/weights/last.pt --resume 1"
 ```
 
 Para treinar outro dataset:

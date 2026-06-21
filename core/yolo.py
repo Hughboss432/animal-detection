@@ -19,17 +19,16 @@ def parse_args():
     p.add_argument("--batch",      type=int, default=-1)
     p.add_argument("--workers",    type=int, default=max(1, (os.cpu_count()-2)))
     p.add_argument("--imgsz",      type=int, default=640)
-    p.add_argument("--exist-ok",   action=argparse.BooleanOptionalAction, default=False, dest="exist_ok")
-    p.add_argument("--resume",     action=argparse.BooleanOptionalAction, default=False)
-    p.add_argument("--amp",        action=argparse.BooleanOptionalAction, default=True)
-    p.add_argument("--no-amp",     action=argparse.BooleanOptionalAction, dest="amp")
+    p.add_argument("--exist-ok",   type=int, default=0, choices=[0, 1])
+    p.add_argument("--resume",     type=int, default=0, choices=[0, 1])
+    p.add_argument("--amp",        type=int, default=1, choices=[0, 1])
     return p.parse_args()
 
 ############################################################################
 
 def get_device(args):
     if not torch.cuda.is_available():
-        args.amp = False
+        args.amp = 0
         return "cpu"
 
     best_gpu, max_free = 0, 0
@@ -60,12 +59,12 @@ def fine_tuning(args):
             optimizer=args.optimizer,
             name="train",
             save=True,
-            exist_ok=args.exist_ok,
-            resume=args.resume,
+            exist_ok=bool(args.exist_ok),
+            resume=bool(args.resume),
             batch=args.batch,
             workers=args.workers,
             save_period=args.save_every,
-            amp=args.amp,
+            amp=bool(args.amp),
             project=args.project,
         )
     except Exception as e:
