@@ -85,7 +85,8 @@ make run ARGS="--epochs 50 --save-every 25 --model yolo26n.pt"
 | `--project`  | `core/runs`       | Caminho padrão do checkpoint                           |
 | `--optimizer`| `auto`            | Otimizador                                             |
 | `--imgsz`    | `640`             | Tamanho da imagem de entrada (pixels)                  |
-| `--resume`   | `0`               | Retomar treinamento                                    |
+| `--exist_ok` | `False`           | Sobrescrever checkpoint                                |
+| `--resume`   | `False`           | Retomar treinamento                                    |
 | `--batch`    | `-1`              | Tamanho do batch (auto 60% de uso)                     |
 | `--workers`  | `4`               | Workers do dataloader (use 4 em CPU)                   |
 | `--no-amp`   | —                 | Desativa mixed precision (automático em CPU)           |
