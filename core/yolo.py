@@ -13,16 +13,16 @@ def parse_args():
     p.add_argument("--data",       type=str, default=os.path.join(BASE_DIR, "tmp", "dataset", "data.yaml"))
     p.add_argument("--epochs",     type=int, default=100)
     p.add_argument("--save-every", type=int, default=10, dest="save_every")
-    p.add_argument("--model",      type=str, default="yolo26x.pt")
+    p.add_argument("--model",      type=str, default=os.path.join(BASE_DIR, "tmp", "yolo26x.pt"))
     p.add_argument("--optimizer",  type=str, default="auto")
     p.add_argument("--project",    type=str, default=os.path.join(BASE_DIR, "core", "runs"))
     p.add_argument("--batch",      type=int, default=-1)
     p.add_argument("--workers",    type=int, default=max(1, (os.cpu_count()-2)))
     p.add_argument("--imgsz",      type=int, default=640)
-    p.add_argument("--exist_ok",   type=bool, default=False)
-    p.add_argument("--resume",     type=bool, default=False)
-    p.add_argument("--amp",        action="store_true", default=True)
-    p.add_argument("--no-amp",     action="store_false", dest="amp")
+    p.add_argument("--exist-ok",   action=argparse.BooleanOptionalAction, default=False, dest="exist_ok")
+    p.add_argument("--resume",     action=argparse.BooleanOptionalAction, default=False)
+    p.add_argument("--amp",        action=argparse.BooleanOptionalAction, default=True)
+    p.add_argument("--no-amp",     action=argparse.BooleanOptionalAction, dest="amp")
     return p.parse_args()
 
 ############################################################################
@@ -49,7 +49,7 @@ def fine_tuning(args):
 
     device = get_device(args)
 
-    model = YOLO(os.path.join(BASE_DIR, "tmp", args.model))
+    model = YOLO(args.model)
 
     try:
         results = model.train(

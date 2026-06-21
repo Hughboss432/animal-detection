@@ -113,13 +113,13 @@ core/runs/train/weights/
 No caso de treino continuo de dataset, retomando de onde parou:
 
 ```bash
-make run ARGS="--model runs/train/weights/last.pt --resume True"
+make run ARGS="--model core/runs/train/weights/last.pt --resume True"
 ```
 
 Para treinar outro dataset:
 
 ```bash
-make run ARGS="--data dataset2/data.yaml --model runs/train/weights/best.pt"
+make run ARGS="--data dataset2/data.yaml --model core/runs/train/weights/best.pt"
 ```
 
 ## Dispositivo e Workers
