@@ -10,11 +10,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Default arguments,
 def parse_args():
     p = argparse.ArgumentParser()
-    p.add_argument("--data",       type=str, default="dataset/data.yaml")
+    p.add_argument("--data",       type=str, default=os.path.join(BASE_DIR, "tmp", "dataset", "data.yaml"))
     p.add_argument("--epochs",     type=int, default=100)
     p.add_argument("--save-every", type=int, default=10, dest="save_every")
     p.add_argument("--model",      type=str, default="yolo26x.pt")
     p.add_argument("--optimizer",  type=str, default="auto")
+    p.add_argument("--project",    type=str, default=os.path.join(BASE_DIR, "core", "runs"))
     p.add_argument("--batch",      type=int, default=-1)
     p.add_argument("--workers",    type=int, default=4)
     p.add_argument("--imgsz",      type=int, default=640)
@@ -47,11 +48,11 @@ def fine_tuning(args):
 
     device = get_device(args)
 
-    model = YOLO(f"./tmp/{args.model}")
+    model = YOLO(os.path.join(BASE_DIR, "tmp", args.model))
 
     try:
         results = model.train(
-            data=os.path.join(BASE_DIR, "tmp", args.data),
+            data=args.data,
             epochs=args.epochs,
             imgsz=args.imgsz,
             device=device,
@@ -63,7 +64,7 @@ def fine_tuning(args):
             workers=args.workers,
             save_period=args.save_every,
             amp=args.amp,
-            project=os.path.join(BASE_DIR, "core", "runs"),
+            project=args.project,
         )
     except Exception as e:
         print(f"Erro: {e}")

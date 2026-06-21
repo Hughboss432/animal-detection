@@ -82,7 +82,8 @@ make run ARGS="--epochs 50 --save-every 25 --model yolo26n.pt"
 | `--epochs`   | `100`             | Número total de épocas de treino                       |
 | `--save-every`| `10`             | Salvar checkpoint a cada N épocas                      |
 | `--model`    | `yolo26x.pt`      | Modelo base para fine-tuning                           |
-| `--optimizer` | `auto`           | Otimizador                                             |
+| `--project`  | `core/runs`       | Caminho padrão do checkpoint                           |
+| `--optimizer`| `auto`            | Otimizador                                             |
 | `--imgsz`    | `640`             | Tamanho da imagem de entrada (pixels)                  |
 | `--resume`   | `0`               | Retomar treinamento                                    |
 | `--batch`    | `-1`              | Tamanho do batch (auto 60% de uso)                     |
